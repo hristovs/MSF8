@@ -8,7 +8,7 @@ using namespace pqxx;
 int main(){
 	string selectQuery = "";
 	cout << "Enter query: ";
-	cin >> selectQuery;
+    getline(cin,selectQuery);
 
 	Select * aSelect = new Select(selectQuery);
 	aSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);

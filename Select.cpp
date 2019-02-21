@@ -17,6 +17,7 @@ string Select::resultingString(){
 void Select::queryDatabase(){
 	try{
 	string sql = selectString;
+        cout<<sql<<endl;
 	connection C(connectionString);
 	if (C.is_open()) {
        	 cout << "Opened database successfully: " << C.dbname() << endl;
@@ -28,11 +29,11 @@ void Select::queryDatabase(){
       nontransaction N(C);
 
       /* Execute SQL query */
-      result R( N.exec( sql ));
+      result R= N.exec(sql);
       resultString = "";
       for(result::const_iterator row = R.begin(); row!=R.end(); row++){
-     	 for (result::tuple::const_iterator field = row->begin(); field != row->end();++field) {
-     		 resultString = resultString + field->c_str();
+          for(int i=0;i<row.size();i++){
+              cout<<row[i].as<string>()<<endl;
   	 	}
       }
 	
