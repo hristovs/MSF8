@@ -9,7 +9,7 @@ Select::Select(string selectParams){
     //    notFinished = true;
 }
 
-void Select::queryDatabase(){
+string Select::queryDatabase(){
     try{
         string sql = selectString;
         cout<<sql<<endl;
@@ -26,22 +26,22 @@ void Select::queryDatabase(){
         /* Execute SQL query */
         result R= N.exec(sql);
         int j=0;
+	returningString = "";
         for(result::const_iterator row = R.begin(); row!=R.end(); row++){
             j++;
             for(int i=0;i<row.size();i++){
                 if(!row.at(i).is_null())
-                    cout<<R.column_name(i)<<":"<<row[i].as<string>()<<endl;
+                   returningString += row[i].as<string>() + "\n" ;
             }
-            cout<<"Data "<<j<<" complete"<<"\n"<<endl;
-        }
+           }
         
         cout<<"Operation done successfully!" << endl;
         C.disconnect();
     }catch(const exception &e){
         cerr<< e.what() << endl;
     }
-    //    notFinished = false;
-}
+    return returningString;
+   }
 
 
 void Select::setConnectionParameters(string dbname,string account, string password, string endpoint, int port){

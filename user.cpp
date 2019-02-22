@@ -12,10 +12,7 @@ int main(){
     
     Select * aSelect = new Select(selectQuery);
     aSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);
-    aSelect->queryDatabase();
-    //    while(aSelect->notFinished){
-    //    usleep(1000);
-    //        }
+    cout << aSelect->queryDatabase();  
     delete aSelect;
     
     cout << "Program finishing!!!" << endl;
