@@ -23,11 +23,11 @@ void Select::queryDatabase(){
         nontransaction N(C);
         
         /* Execute SQL query */
-        result R= N.exec(sql);
+        R= N.exec(sql);
         cout << "Enter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 for ending the program.\n"<<endl;
         cin.get(selectFunctionNumber);
         cin.ignore(80,'\n');
-        while (selectFunctions(R,selectFunctionNumber)!=1){
+        while (selectFunctions(selectFunctionNumber)!=1){
             cout << "\nEnter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 for ending the program.\n"<<endl;
             cin.get(selectFunctionNumber);
             cin.ignore(80,'\n');
@@ -38,7 +38,7 @@ void Select::queryDatabase(){
     }
 }
 
-void Select::uniqueData(result R){
+void Select::uniqueData(){
     int flag=0;
     string inserts = ": ";
     for(result::const_iterator row = R.begin()+1; row!=R.end(); row++){
@@ -64,7 +64,7 @@ void Select::uniqueData(result R){
     }
 }
 
-int Select::dataSize(result R){
+int Select::dataSize(){
     int ArraySize = 0;
     for(result::const_iterator row = R.begin(); row!=R.end(); row++){
         for(int i=0;i<row.size();i++){
@@ -74,11 +74,11 @@ int Select::dataSize(result R){
     return ArraySize;
 }
 
-string *Select::resultString(result R){
-    string* results;
+string *Select::resultString(){
+	string* results;
     int columnSize=R.columns();//column size from database.
     int j=0;//counter for the column name.
-    int arraySize = dataSize(R);
+    int arraySize = dataSize();
     results = new string[arraySize];//init new string array with column size.
     string inserts = ": ";//better visulization, comment them if we don't want to print the data.
     for(result::const_iterator row = R.begin()+1; row!=R.end(); row++){
@@ -90,29 +90,21 @@ string *Select::resultString(result R){
             j++;
         }
     }
-    for(int i=0;i<arraySize;i++){
-        if (i%columnSize==0||i==arraySize) {
-            cout<<results[i]<<endl<<endl;
-        }
-        else{
-            cout<<results[i]<<endl;
-        }
-    }
     cout<<"The data has been stored in string!"<<endl;
     return results;
 }
 
-int Select::selectFunctions(result R,int selectFunctionNumber){
+int Select::selectFunctions(int selectFunctionNumber){
     switch (selectFunctionNumber) {
         case 49:
             cout<<"Unique Data are: "<<endl;
-            uniqueData(R);
+            uniqueData();
             break;
         case 50:
-            resultString(R);
+            resultString();
             break;
         case 51:
-            cout<<"\nsize of the data is "<<dataSize(R)<<"."<<endl;
+            cout<<"\nsize of the data is "<<dataSize()<<"."<<endl;
             break;
         case 52:
             cout<<"\n";
