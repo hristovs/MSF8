@@ -4,6 +4,7 @@
 #include <cstring>
 using namespace pqxx;
 using namespace std;
+int rowSize;
 Select::Select(string selectParams){
     selectString = selectParams;
 }
@@ -24,11 +25,11 @@ void Select::queryDatabase(){
         
         /* Execute SQL query */
         R= N.exec(sql);
-        cout << "Enter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 for ending the program.\n"<<endl;
+        cout << "Enter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 calculate average task duration.\n5 for average number of patients.\n6 for ending the program.\n"<<endl;
         cin.get(selectFunctionNumber);
         cin.ignore(80,'\n');
         while (selectFunctions(selectFunctionNumber)!=1){
-            cout << "\nEnter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 for ending the program.\n"<<endl;
+            cout << "\nEnter function: \n1 for unique column name.\n2 for store the data in a string.\n3 for size of the data.\n4 calculate average task duration.\n5 for average number of patients.\n6 for ending the program.\n"<<endl;
             cin.get(selectFunctionNumber);
             cin.ignore(80,'\n');
         }
@@ -67,6 +68,7 @@ void Select::uniqueData(){
 int Select::dataSize(){
     int ArraySize = 0;
     for(result::const_iterator row = R.begin(); row!=R.end(); row++){
+        rowSize++;
         for(int i=0;i<row.size();i++){
             ArraySize++;//get the column size from database.
         }
@@ -75,8 +77,8 @@ int Select::dataSize(){
 }
 
 string *Select::resultString(){
-	string* results;
-    int columnSize=R.columns();//column size from database.
+    string* results;
+    //int columnSize=R.columns();//column size from database.
     int j=0;//counter for the column name.
     int arraySize = dataSize();
     results = new string[arraySize];//init new string array with column size.
@@ -90,7 +92,6 @@ string *Select::resultString(){
             j++;
         }
     }
-    cout<<"The data has been stored in string!"<<endl;
     return results;
 }
 
@@ -102,11 +103,28 @@ int Select::selectFunctions(int selectFunctionNumber){
             break;
         case 50:
             resultString();
+            cout<<"The data has been stored in string!"<<endl;
             break;
         case 51:
             cout<<"\nsize of the data is "<<dataSize()<<"."<<endl;
             break;
-        case 52:
+        case 52:{
+            int result = averageDuration();
+            if(result==0)
+                cout<<"There aren't any data related to duration."<<endl;
+            else
+                cout << "The average task takes: " << result << " sec to complete!" <<  endl;
+            break;
+        }
+        case 53:{
+            int result = averagePatients();
+            if(result==0)
+                cout<<"There aren't any data related to number of patients."<<endl;
+            else
+                cout << "The average number of patients are: " << result << "." <<  endl;
+            break;
+        }
+        case 54:
             cout<<"\n";
             return 1;
             break;
@@ -116,6 +134,70 @@ int Select::selectFunctions(int selectFunctionNumber){
     }
     return 0;
 }
+
+double Select::averageDuration(){
+    string delimiter = ": ";
+    string tempString = " ";
+    string columnName = "duration";
+    int averageDuration = 0;
+    int averageDenominator = 0;
+    int count=0;
+    int arraySize = dataSize();
+    string* resultStrings = resultString();
+    // this int is there so i dont have to keep calling Select::dataSize();
+    for(int i = 0; i <=arraySize; ++i){
+        tempString = resultStrings[i];
+        if(!tempString.empty()){ // this if statement is there because for some reason the result string has empty lines
+            if(tempString.substr(0,tempString.find(delimiter))==columnName){
+                tempString = tempString.substr(tempString.find(delimiter) + 1);
+                averageDuration+= stoi(tempString);
+                ++averageDenominator;
+                count++;
+            }
+        }
+    }
+    cout<<averageDuration<<endl;
+    cout<<averageDenominator<<endl;
+    if (count==0)
+        return count;
+    else
+        return (double)(averageDuration/averageDenominator);
+}
+
+float Select::averagePatients(){
+    string delimiter = ": ";
+    string tempString = " ";
+    string columnName = "number_of_patients_being_admitted";
+    int averagePatient= 0;
+    int averageDenominator = 0;
+    int count=0;
+    int arraySize = dataSize();
+    string* resultStrings = resultString();
+    // this int is there so i dont have to keep calling Select::dataSize();
+    for(int i = 0; i <=arraySize; ++i){
+        tempString = resultStrings[i];
+        if(!tempString.empty()){ // this if statement is there because for some reason the result string has empty lines
+            if(tempString.substr(0,tempString.find(delimiter))==columnName){
+                tempString = tempString.substr(tempString.find(delimiter) + 1);
+                averagePatient+= stoi(tempString);
+                ++averageDenominator;
+                count++;
+            }
+        }
+    }
+    cout<<averagePatient<<endl;
+    cout<<averageDenominator<<endl;
+    if (count==0)
+        return count;
+    else{
+        //return (float)averagePatient/(float)averageDenominator;
+    float avgPt = (float) averagePatient;
+    float avgDnm = (float) averageDenominator;
+    float diff = avgPt/avgDnm;
+    return diff;
+    }
+}
+
 void Select::setConnectionParameters(string dbname,string account, string password, string endpoint, int port){
     string template1 = "dbname=";
     string template2 = " user=";
