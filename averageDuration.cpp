@@ -28,10 +28,10 @@ int main(){
         		averageDuration+= stoi(tempString);
         		++averageDenominator;
         	}
-          	//cout << i << "/" << resultsLength << " " << tempString << endl; error handling
+          	cout << i << "/" << resultsLength << " " << tempString << endl; 
 
         }
         double avrg = (averageDuration/averageDenominator)/60;
-        cout << "The average task takes: " << avrg << " minutes to complete!" <<  endl;
+       // cout << "The average task takes: " << avrg << " minutes to complete!" <<  endl; //error handling
         delete aSelect;
 }
