@@ -14,6 +14,8 @@ public:
     int selectFunctions(int selectFunctionNumber);//function selection.
     double averageDuration();
     float averagePatients();
+    float pscore();
+    int *numberOfShift();
 private:
     string selectString;
     string connectionString;
