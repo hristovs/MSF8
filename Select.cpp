@@ -229,7 +229,6 @@ float Select::pscore(){
     float numberOfPatient =0;
     float arraySize = dataSize();
     string* resultStrings = resultString();
-    // this int is there so i dont have to keep calling Select::dataSize();
     for(int i = 0; i <=arraySize; ++i){
         tempString = resultStrings[i];
         if(!tempString.empty()){
