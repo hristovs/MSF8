@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>img/msflogo.png</file>
+        <file>img/background1.png</file>
+        <file>img/background2.png</file>
+        <file>img/background3.png</file>
+        <file>img/background4.png</file>
+        <file>img/background5.png</file>
+        <file>img/background6.png</file>
+    </qresource>
+</RCC>
