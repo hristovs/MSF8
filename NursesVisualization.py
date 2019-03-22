@@ -14,15 +14,15 @@ cur.execute("SELECT SUM(patient_severity_score_3) FROM tacuity WHERE patient_sev
 severity3 = cur.fetchall()
 severity3 = severity3[0]
 
-cur.execute("SELECT SUM(patient_severity_score_2) FROM tacuity WHERE patient_severity_score_3 != 'nan'")
+cur.execute("SELECT SUM(patient_severity_score_2) FROM tacuity WHERE patient_severity_score_2 != 'nan'")
 severity2 = cur.fetchall()
 severity2 = severity2[0]
 
-cur.execute("SELECT SUM(patient_severity_score_1) FROM tacuity WHERE patient_severity_score_3 != 'nan'")
+cur.execute("SELECT SUM(patient_severity_score_1) FROM tacuity WHERE patient_severity_score_1 != 'nan'")
 severity1 = cur.fetchall()
 severity1 = severity1[0]
 
-cur.execute("SELECT SUM(patient_severity_score_0) FROM tacuity WHERE patient_severity_score_3 != 'nan'")
+cur.execute("SELECT SUM(patient_severity_score_0) FROM tacuity WHERE patient_severity_score_0 != 'nan'")
 severity0 = cur.fetchall()
 severity0 = severity0[0]
 
