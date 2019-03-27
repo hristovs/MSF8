@@ -1,12 +1,13 @@
 #include <pqxx/pqxx>
 
+//Query class provides a number of set and hardcoded db queries
+
  class Query{
 public:
-	int dataSize(pqxx::result R);
-	double averageDuration();
-	float averagePatients();
-	float pscore();
-	int *numberOfShift();
+	static double averageDuration();
+	static float averagePatients();
+	static float pscore();
+	static int *numberOfShift();
 private:
 
 
