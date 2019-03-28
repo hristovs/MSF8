@@ -99,9 +99,9 @@ string *Select::resultString(){
             else
                 results[j]=R.column_name(i)+inserts+"Empty";
             j++;
-    }
+        }
     return results;
-}
+    }
 }
 
 /*int Select::selectFunctions(int selectFunctionNumber){
