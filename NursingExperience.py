@@ -27,7 +27,7 @@ for i in range(0,len(list1)):
     experience = list1[i]
     experience = experience[0]
     exp[i] = experience
-print(exp)
+#print(exp)
 
 
 data = ["" for y in range(len(usernames))]
@@ -40,7 +40,7 @@ for x in range(1,len(usernames) + 1):
         sum = sum + l[i][2]
 
     avrg = sum/len(l)
-    int_avrg = int(avrg)
+    int_avrg = int(avrg) /60
     qualification = l[0][1]
     data[x-1] = int_avrg
     x_pos[x-1] = qualification
@@ -68,8 +68,8 @@ labels = ['7 to 11 Months', '1 to 2 Years', '3 to 4 Years', '11 to 15 Years']
 for xe, ye in zip(x, y):
     plot.scatter([xe] * len(ye), ye, color=colors[xe-1])
 plot.xticks(x, labels)
-plot.ylim(top=3000)
+plot.ylim(top=60)
 plot.title('Nursing Experience Affect on Task Effeciency', fontweight='bold')
 plot.xlabel('How Long Nurse has Been Qualified',fontweight='bold')
-plot.ylabel('Average Task Duration',fontweight='bold')
+plot.ylabel('Average Task Duration (minutes)',fontweight='bold')
 plot.show()
