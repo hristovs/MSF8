@@ -18,7 +18,7 @@ for i in range(0,len(list)):
     user = list[i]
     user = user[0]
     usernames[i] = user
-#print(usernames)
+
 
 cur.execute("select distinct(duration_of_qualification) FROM texp;")
 list1 = cur.fetchall()
@@ -27,12 +27,12 @@ for i in range(0,len(list1)):
     experience = list1[i]
     experience = experience[0]
     exp[i] = experience
-#print(exp)
+print(exp)
 
 
-data = ["" for y in range(len(list))]
-x_pos = ["" for z in range(len(list))]
-for x in range(1,len(list) + 1):
+data = ["" for y in range(len(usernames))]
+x_pos = ["" for z in range(len(usernames))]
+for x in range(1,len(usernames) + 1):
     cur.execute("select t2.user_id, t3.duration_of_qualification, t1.duration FROM t_events t1 INNER JOIN t_users t2 ON t1.user_id = t2.user_id INNER JOIN texp t3 ON t2.username = t3.username WHERE t2.user_id=%s;",[x])
     l = cur.fetchall()
     sum = 0
