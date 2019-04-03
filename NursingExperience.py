@@ -45,27 +45,31 @@ for x in range(1,len(list) + 1):
     data[x-1] = int_avrg
     x_pos[x-1] = qualification
 
+experience0 = []
+experience1 = []
+experience2 = []
+experience3 = []
+for x in range(0,len(x_pos)):
+    if x_pos[x] == '7_to_11_months': experience0.append(data[x])
+    elif x_pos[x] == '1_to_2_years': experience1.append(data[x])
+    elif x_pos[x] == '3_to_4_years': experience2.append(data[x])
+    else: experience3.append(data[x])
 
-#for item in x_pos:
-#    if item == "7_to_11_months": x_pos[x_pos.index(item)] = 1
-#    elif item == "1_to_2_years": x_pos[x_pos.index(item)] = 2
-#    elif item == "3_to_4_years": x_pos[x_pos.index(item)] = 3
-#    else: x_pos[x_pos.index(item)] = 4
-
-
-print(data)
-print(x_pos)
+y=[experience0, experience1, experience2, experience3]
+x=[1,2,3,4]
 
 # close the communication with the PostgreSQL
 conn.commit()
 cur.close()
 conn.close()
 
-x = x_pos
-y_pos = np.arange(len(x))
-plot.plot(y_pos, data, 'ro')
-plot.xticks(y_pos, x)
-plot.title('Nursing Experience Effect on Task Effeciency')
-plot.xlabel('How Long Nurse has Been Qualified')
-plot.ylabel('Average Task Duration')
+colors = ['r','b','m','k']
+labels = ['7 to 11 Months', '1 to 2 Years', '3 to 4 Years', '11 to 15 Years']
+for xe, ye in zip(x, y):
+    plot.scatter([xe] * len(ye), ye, color=colors[xe-1])
+plot.xticks(x, labels)
+plot.ylim(top=3000)
+plot.title('Nursing Experience Affect on Task Effeciency', fontweight='bold')
+plot.xlabel('How Long Nurse has Been Qualified',fontweight='bold')
+plot.ylabel('Average Task Duration',fontweight='bold')
 plot.show()

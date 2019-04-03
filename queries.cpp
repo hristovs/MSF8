@@ -1,22 +1,29 @@
 #include <iostream>
 #include "queries.h"
 #include "Select.h"
-int main(){
-return 0;
-}
-    
 
 
 
-double Query::averageDuration(){
+
+/* @function:averageDuration
+ * @author: Samuil Hristov
+ * @edited: Jingren Li, Samuil Hristov
+ * Returns double of averageDuration for all tasks
+ */
+
+ double Query::averageDuration(){
+    string sqlQuery = "QUERY FOR AVERAGE DURATION HERE";
+    Select *averageDurationSelect = new Select(sqlQuery);
+    averageDurationSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);
+    averageDurationSelect->queryDatabase();    
     string delimiter = ": ";
     string tempString = " ";
     string columnName = "duration";
     int averageDuration = 0;
     int averageDenominator = 0;
     int count=0;
-    int arraySize = dataSize();
-    string* resultStrings = resultString();
+    int arraySize = averageDurationSelect->dataSize();
+    string* resultStrings = averageDurationSelect->resultString();
     // this int is there so i dont have to keep calling Select::dataSize();
     for(int i = 0; i <=arraySize; ++i){
         tempString = resultStrings[i];
@@ -31,6 +38,7 @@ double Query::averageDuration(){
     }
     //cout<<averageDuration<<endl;
     //cout<<averageDenominator<<endl;
+    delete averageDurationSelect;
     if (count==0)
         return count;
     else
@@ -38,15 +46,27 @@ double Query::averageDuration(){
 }
 
 
-float Query::averagePatients(){
+
+
+/* @function:averagePatients
+ * @author: Jingren Li
+ * @edited: Samuil Hristov
+ * Returns float of average patients being admitted
+ */
+
+ float Query::averagePatients(){
+    string sqlQuery = "QUERY FOR AVERAGE PATIENTS HERE";
+    Select *averagePatientsSelect = new Select(sqlQuery);
+    averagePatientsSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);
+    averagePatientsSelect->queryDatabase();
     string delimiter = ": ";
     string tempString = " ";
     string columnName = "number_of_patients_being_admitted";
     int averagePatient= 0;
     int averageDenominator = 0;
     int count=0;
-    int arraySize = dataSize();
-    string* resultStrings = resultString();
+    int arraySize = averagePatientsSelect->dataSize();
+    string* resultStrings = averagePatientsSelect->resultString();
     // this int is there so i dont have to keep calling Select::dataSize();
     for(int i = 0; i <=arraySize; ++i){
         tempString = resultStrings[i];
@@ -63,6 +83,7 @@ float Query::averagePatients(){
     }
     //cout<<averagePatient<<endl;
     //cout<<averageDenominator<<endl;
+    delete averagePatientsSelect;
     if (count==0)
         return count;
     else{
@@ -76,7 +97,19 @@ float Query::averagePatients(){
 
 
 
-float Query::pscore(){
+
+
+/* @function:pscore
+ * @author: Jingren Li
+ * @edited: Samuil Hristov
+ * Returns float of average patient severity
+ */
+
+ float Query::pscore(){
+    string sqlQuery = "QUERY FOR PSCORE HERE";
+    Select *pscoreSelect = new Select(sqlQuery);
+    pscoreSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);
+    pscoreSelect->queryDatabase();
     string delimiter = ": ";
     string tempString = " ";
     string columnName = "patient_severity_score_1";
@@ -87,8 +120,8 @@ float Query::pscore(){
     float pscore2 = 0;
     float pscore3 = 0;
     float numberOfPatient =0;
-    float arraySize = dataSize();
-    string* resultStrings = resultString();
+    float arraySize = pscoreSelect->dataSize();
+    string* resultStrings = pscoreSelect->resultString();
     for(int i = 0; i <=arraySize; ++i){
         tempString = resultStrings[i];
         if(!tempString.empty()){
@@ -136,23 +169,33 @@ float Query::pscore(){
         }
     }
     float result =(pscore1+pscore2+pscore3)/numberOfPatient;
+    delete pscoreSelect;
     //cout<<"result: "<<result<<endl;
     return result;
 }
 
 
-int *Query::numberOfShift(){
-    string sql = "TODO";
-    Select newSelect = new Select(sql);
-    newSelect->queryDatabase();
+
+
+/* @function:numberOfShift
+ * @author: Jingren Li
+ * @edited: Samuil Hristov
+ * Returns array of size 2 - gives day and night shift amounts
+ */
+
+ int *Query::numberOfShift(){
+    string sqlQuery = "QUERY FOR NUMBER OF SHIFTS HERE";
+    Select *numberOfShiftSelect = new Select(sqlQuery);
+    numberOfShiftSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.35.110.243", 5432);
+    numberOfShiftSelect->queryDatabase();
     string delimiter = ": ";
     string tempString = " ";
     string columnName = "enter_the_shift_you_are_working";
     int *result = new int[2];
     int countDay = 0;
     int countNight=0;
-    float arraySize = dataSize(newSelect->returnResult());
-    string* resultStrings = resultString();
+    float arraySize = numberOfShiftSelect->dataSize();
+    string* resultStrings = numberOfShiftSelect->resultString();
     for(int i = 0; i <=arraySize; ++i){
         tempString = resultStrings[i];
         if(!tempString.empty()){
@@ -171,5 +214,6 @@ int *Query::numberOfShift(){
     }
     result[0]=countDay;
     result[1]=countNight;
+    delete numberOfShiftSelect;
     return result;
 }
