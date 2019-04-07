@@ -48,27 +48,25 @@ for x in range(1,len(usernames) + 1):
 experience0 = []
 experience1 = []
 experience2 = []
-experience3 = []
 for x in range(0,len(x_pos)):
     if x_pos[x] == '7_to_11_months': experience0.append(data[x])
     elif x_pos[x] == '1_to_2_years': experience1.append(data[x])
     elif x_pos[x] == '3_to_4_years': experience2.append(data[x])
-    else: experience3.append(data[x])
 
-y=[experience0, experience1, experience2, experience3]
-x=[1,2,3,4]
+y=[experience0, experience1, experience2]
+x=[1,2,3]
 
 # close the communication with the PostgreSQL
 conn.commit()
 cur.close()
 conn.close()
 
-colors = ['r','b','m','k']
-labels = ['7 to 11 Months', '1 to 2 Years', '3 to 4 Years', '11 to 15 Years']
+colors = ['r','b','m']
+labels = ['7 to 11 Months', '1 to 2 Years', '3 to 4 Years']
 for xe, ye in zip(x, y):
     plot.scatter([xe] * len(ye), ye, color=colors[xe-1])
 plot.xticks(x, labels)
-plot.ylim(top=60)
+plot.ylim(top=50)
 plot.title('Nursing Experience Affect on Task Effeciency', fontweight='bold')
 plot.xlabel('How Long Nurse has Been Qualified',fontweight='bold')
 plot.ylabel('Average Task Duration (minutes)',fontweight='bold')
