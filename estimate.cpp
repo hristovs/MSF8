@@ -2,7 +2,7 @@
 #include <pqxx/pqxx>
 #include "Select.h"
 #include "queries.h"
-
+#include <fstream>
 using namespace pqxx;
 using namespace std;
 
@@ -92,18 +92,25 @@ void outBreakTest(int numberOfNurse, int typeOfOutbreak,string nurseEXP[], doubl
 int main(){
     int numberOfNurses=Query::numberOfNurse();
     string *nurseList = Query::nurseList();
-    //string nursess = nurseList[0];
-    //Query::qualification(nursess);
     double nurses[numberOfNurses][4];
     for(int i=0;i<numberOfNurses;i++){
         nurses[i][0]=Query::qualification(nurseList[i]);
+        cout<<nurses[i][0]<<endl;
         nurses[i][1]=Query::averageDuration(nurseList[i]);
+        cout<<nurses[i][1]<<endl;
         nurses[i][2]=Query::pscore(nurseList[i]);
+        cout<<nurses[i][2]<<endl;
         nurses[i][3]=Query::averagePatients(nurseList[i]);
+        cout<<nurses[i][3]<<endl;
     }
     string qualifications[3]={"diploma","bsc","Assist"};
     //double nurse[20][5]={{1,20,1,20,20},{2,40,0.6,10,10},{1,70,1.5,12,15},{0,90,1.8,17,24},{2,100,2,2,22},{1,45,2.75,4,12},{0,49,3,10,12},{1,78,2.4,9,21},{2,282,0.6,11,25},{1,297,1.7,13,6},{1,29,2.9,16,9},{1,60,1.4,12,22},{0,23,1.5,1,6},{1,22,1.9,1,7},{1,28,1.4,3,28},{1,60,2.5,5,18},{1,80,0.7,8,17},{2,10,0.8,2,29},{1,40,1.8,10,22},{1,90,1.98,9,21}};
     string nurseExp[20];
+    ofstream test;
+    test.open("/Users/jingrenli/Library/Mobile Documents/com~apple~CloudDocs/nurse_allocation/test.text");
+    for(int i=0;i<numberOfNurses;i++){
+        test<<"username "<<nurseList[i]<<" task duration "<<nurses[i][1]<<" pscore "<<nurses[i][2]<<" averagePatient "<<nurses[i][3]<<"\n";
+    }
     for(int i=0;i<numberOfNurses;i++){
         nurseExp[i]=evaluationEXP(qualifications[(int)nurses[i][0]], nurses[i][1], nurses[i][2], nurses[i][3]);
         cout<<"nurse"<<i<<" has "<<nurseExp[i]<<" experence."<<endl;

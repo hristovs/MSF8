@@ -2,9 +2,6 @@
 #include "queries.h"
 #include "Select.h"
 
-
-
-
 /* @function:averageDuration
  * @author: Samuil Hristov
  * @edited: Jingren Li, Samuil Hristov
@@ -25,7 +22,7 @@ double Query::averageDuration(string username){
     int arraySize = averageDurationSelect->dataSize();
     string* resultStrings = averageDurationSelect->resultString();
     // this int is there so i dont have to keep calling Select::dataSize();
-    for(int i = 0; i <=arraySize; ++i){
+    for(int i = 0; i <arraySize; ++i){
         tempString = resultStrings[i];
         if(!tempString.empty()){ // this if statement is there because for some reason the result string has empty lines
             if(tempString.substr(0,tempString.find(delimiter))==columnName){
@@ -36,15 +33,11 @@ double Query::averageDuration(string username){
             }
         }
     }
-    //cout<<averageDuration<<endl;
-    //cout<<averageDenominator<<endl;
-    //delete averageDurationSelect;
     if (count==0)
         return count;
     else
         return (double)(averageDuration/averageDenominator);
 }
-
 
 
 
@@ -60,7 +53,7 @@ float Query::averagePatients(string username){
     averagePatientsSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     averagePatientsSelect->queryDatabase();
     string delimiter = ":";
-    string tempString = " ";
+    string tempString1 = " ";
     string columnName = "number_of_patients_being_admitted";
     int averagePatient= 0;
     int averageDenominator = 0;
@@ -68,35 +61,28 @@ float Query::averagePatients(string username){
     int arraySize = averagePatientsSelect->dataSize();
     string* resultStrings = averagePatientsSelect->resultString();
     // this int is there so i dont have to keep calling Select::dataSize();
-    for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"){
-                    averagePatient+= stoi(tempString);
+    for(int i = 0; i <arraySize; ++i){
+        tempString1 = resultStrings[i];
+        if(!tempString1.empty()){
+            if(tempString1.substr(0,tempString1.find(delimiter))==columnName){
+                tempString1 = tempString1.substr(tempString1.find(delimiter) + 1);
+                if(tempString1!="Empty"){
+                    averagePatient+= stoi(tempString1);
                     ++averageDenominator;
                     count++;
                 }
             }
         }
     }
-    //cout<<averagePatient<<endl;
-    //cout<<averageDenominator<<endl;
-    //delete averagePatientsSelect;
     if (count==0)
         return count;
     else{
-        //return (float)averagePatient/(float)averageDenominator;
         float avgPt = (float) averagePatient;
         float avgDnm = (float) averageDenominator;
         float diff = avgPt/avgDnm;
         return diff;
     }
 }
-
-
-
 
 
 /* @function:pscore
@@ -111,70 +97,62 @@ float Query::pscore(string username){
     pscoreSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     pscoreSelect->queryDatabase();
     string delimiter = ":";
-    string tempString = " ";
-    string columnName = "patient_severity_score_1";
-    string columnName2 = "patient_severity_score_2";
-    string columnName3 = "patient_severity_score_3";
-    string columnName4 = "total_number_of_patients_on_the_ward";
+    string tempString2 = " ";
     float pscore1 = 0;
     float pscore2 = 0;
     float pscore3 = 0;
     float numberOfPatient =0;
     float arraySize = pscoreSelect->dataSize();
     string* resultStrings = pscoreSelect->resultString();
-    for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"&&tempString!="nan"){
-                    pscore1+= stof(tempString)*1;
+    for(int i = 0; i <arraySize; ++i){
+        tempString2 = resultStrings[i];
+        if(!tempString2.empty()){
+            if(tempString2.substr(0,tempString2.find(delimiter))=="patient_severity_score_1"){
+                tempString2 = tempString2.substr(tempString2.find(delimiter) + 1);
+                if(tempString2!="Empty"&&tempString2!="nan"){
+                    pscore1+= stof(tempString2)*1;
                 }
             }
         }
     }
-    for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName2){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"&&tempString!="nan"){
-                    pscore2+= stof(tempString)*2;
+    for(int i = 0; i <arraySize; ++i){
+        tempString2 = resultStrings[i];
+        if(!tempString2.empty()){
+            if(tempString2.substr(0,tempString2.find(delimiter))=="patient_severity_score_2"){
+                tempString2 = tempString2.substr(tempString2.find(delimiter) + 1);
+                if(tempString2!="Empty"&&tempString2!="nan"){
+                    pscore2+= stof(tempString2)*2;
                 }
             }
         }
     }
-    for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName3){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"&&tempString!="nan"){
+    for(int i = 0; i <arraySize; ++i){
+        tempString2 = resultStrings[i];
+        if(!tempString2.empty()){
+            if(tempString2.substr(0,tempString2.find(delimiter))=="patient_severity_score_3"){
+                tempString2 = tempString2.substr(tempString2.find(delimiter) + 1);
+                if(tempString2!="Empty"&&tempString2!="nan"){
                     //cout<<"p3Score: "<<tempString<<endl;
-                    pscore3+= stof(tempString)*3;
+                    pscore3+= stof(tempString2)*3;
                 }
             }
         }
     }
-    for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName4){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"&&tempString!="nan"){
+    for(int i = 0; i <arraySize; ++i){
+        tempString2 = resultStrings[i];
+        if(!tempString2.empty()){
+            if(tempString2.substr(0,tempString2.find(delimiter))=="total_number_of_patients_on_the_ward"){
+                tempString2 = tempString2.substr(tempString2.find(delimiter) + 1);
+                if(tempString2!="Empty"&&tempString2!="nan"){
                     //cout<<"p3Score: "<<tempString<<endl;
-                    numberOfPatient+= stof(tempString);
+                    numberOfPatient+= stof(tempString2);
                 }
             }
         }
     }
     float result =(pscore1+pscore2+pscore3)/numberOfPatient;
-    //delete pscoreSelect;
-    //cout<<"result: "<<result<<endl;
     return result;
 }
-
-
 
 
 /* @function:numberOfShift
@@ -189,7 +167,7 @@ int *Query::numberOfShift(){
     numberOfShiftSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     numberOfShiftSelect->queryDatabase();
     string delimiter = ":";
-    string tempString = " ";
+    string tempString3 = " ";
     string columnName = "enter_the_shift_you_are_working";
     int *result = new int[2];
     int countDay = 0;
@@ -197,15 +175,15 @@ int *Query::numberOfShift(){
     float arraySize = numberOfShiftSelect->dataSize();
     string* resultStrings = numberOfShiftSelect->resultString();
     for(int i = 0; i <=arraySize; ++i){
-        tempString = resultStrings[i];
-        if(!tempString.empty()){
-            if(tempString.substr(0,tempString.find(delimiter))==columnName){
-                tempString = tempString.substr(tempString.find(delimiter) + 1);
-                if(tempString!="Empty"){
-                    if(tempString=="am"||tempString=="pm"||tempString=="day"){
+        tempString3 = resultStrings[i];
+        if(!tempString3.empty()){
+            if(tempString3.substr(0,tempString3.find(delimiter))==columnName){
+                tempString3 = tempString3.substr(tempString3.find(delimiter) + 1);
+                if(tempString3!="Empty"){
+                    if(tempString3=="am"||tempString3=="pm"||tempString3=="day"){
                         countDay++;
                     }
-                    else if(tempString=="night"){
+                    else if(tempString3=="night"){
                         countNight++;
                     }
                 }
@@ -224,7 +202,6 @@ int Query::numberOfNurse(){
     numberOfNurse->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     numberOfNurse->queryDatabase();
     string delimiter = ":";
-    string tempString = " ";
     string columnName = "username";
     int arraySize = numberOfNurse->dataSize();
     return arraySize;
@@ -236,19 +213,18 @@ int Query::qualification(string username){
     qualification->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     qualification->queryDatabase();
     string delimiter = ":";
-    string tempString = " ";
+    string tempString4 = " ";
     string columnName = "qualification";
     int arraySize = qualification->dataSize();
     string* resultStrings = qualification->resultString();
     int result=5;
     for (int i=0; i<arraySize; i++) {
-        tempString = resultStrings[i];
-        string tempString2=tempString.substr(0,tempString.find(delimiter));
-        if(tempString.substr(0,tempString.find(delimiter))==columnName){
-            tempString = tempString.substr(tempString.find(delimiter) + 1);
-            if(tempString=="diploma_in_nursing_science_and_midwiferyorthopedic")
+        tempString4 = resultStrings[i];
+        if(tempString4.substr(0,tempString4.find(delimiter))==columnName){
+            tempString4 = tempString4.substr(tempString4.find(delimiter) + 1);
+            if(tempString4=="diploma_in_nursing_science_and_midwiferyorthopedic")
                 result=0;
-            else if(tempString=="bsc_nursing"){
+            else if(tempString4=="bsc_nursing"){
                 result=1;
             }
             else{
@@ -261,7 +237,6 @@ int Query::qualification(string username){
 
 string *Query::nurseList(){
     string delimiter = ":";
-    string tempString = " ";
     string columnName = "username";
     string sqlQuery = "select username from texp";
     Select *username = new Select(sqlQuery);
@@ -270,9 +245,8 @@ string *Query::nurseList(){
     int arraySize = username->dataSize();
     string *resultStrings=username->resultString();
     for (int i=0; i<arraySize;i++) {
-        tempString = resultStrings[i];
-        if(tempString.substr(0,tempString.find(delimiter))==columnName){
-            resultStrings[i]=tempString.substr(tempString.find(delimiter) + 1);
+        if(resultStrings[i].substr(0,resultStrings[i].find(delimiter))==columnName){
+            resultStrings[i]=resultStrings[i].substr(resultStrings[i].find(delimiter) + 1);
         }
     }
     return resultStrings;
