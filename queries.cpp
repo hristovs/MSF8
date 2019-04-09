@@ -48,15 +48,34 @@ double Query::averageDuration(string username){
  */
 
 float Query::averagePatients(string username){
-    string sqlQuery = "select number_of_patients_being_admitted from tevent where username='"+username+"'";
+    string delimiter = ":";
+    string tempString1 = " ";
+    string columnName = "number_of_patients";
+    string sqlQuery = "select number_of_patients from tevent where username='"+username+"' and number_of_patients is not null";
+    /*string columnName2 = "completed_time";
+    string sqlQuery2 = "select completed_time from tevent where completed_time<current_timestamp and username='"+username+"' order by completed_time asc limit 1";
+    string sqlQuery3 = "select completed_time from tevent where completed_time<current_timestamp and username='"+username+"' order by completed_time desc limit 1";
+    Select *startTime=new Select(sqlQuery2);
+    startTime->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    startTime->queryDatabase();
+    string *startDate = startTime->resultString();
+    string start = startDate[0].substr(startDate[0].find(delimiter) + 1);
+    Select *endTime=new Select(sqlQuery3);
+    endTime->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    endTime->queryDatabase();
+    string *endDate = endTime->resultString();
+    string end = endDate[0].substr(endDate[0].find(delimiter) + 1);
+    string sqlQuery4 = "select date_part('day','"+end+"'::timestamp-'"+start+"'::timestamp)";
+    Select *diffTime=new Select(sqlQuery4);
+    diffTime->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    diffTime->queryDatabase();
+    string *diffDate = diffTime->resultString();
+    float diff = stof(diffDate[0].substr(diffDate[0].find(delimiter) + 1));*/
     Select *averagePatientsSelect = new Select(sqlQuery);
     averagePatientsSelect->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     averagePatientsSelect->queryDatabase();
-    string delimiter = ":";
-    string tempString1 = " ";
-    string columnName = "number_of_patients_being_admitted";
-    int averagePatient= 0;
-    int averageDenominator = 0;
+    float averagePatient= 0;
+    float diffs = 0;
     int count=0;
     int arraySize = averagePatientsSelect->dataSize();
     string* resultStrings = averagePatientsSelect->resultString();
@@ -67,8 +86,8 @@ float Query::averagePatients(string username){
             if(tempString1.substr(0,tempString1.find(delimiter))==columnName){
                 tempString1 = tempString1.substr(tempString1.find(delimiter) + 1);
                 if(tempString1!="Empty"){
-                    averagePatient+= stoi(tempString1);
-                    ++averageDenominator;
+                    averagePatient+= stof(tempString1);
+                    diffs++;
                     count++;
                 }
             }
@@ -77,10 +96,7 @@ float Query::averagePatients(string username){
     if (count==0)
         return count;
     else{
-        float avgPt = (float) averagePatient;
-        float avgDnm = (float) averageDenominator;
-        float diff = avgPt/avgDnm;
-        return diff;
+        return averagePatient/diffs;
     }
 }
 
