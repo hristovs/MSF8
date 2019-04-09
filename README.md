@@ -12,4 +12,5 @@ It is important to note that you also <strong> must install the LPQXX library </
 
 The instructions for this are listed on their website.
 
-Alternatively, use the makefile </p>
+Alternatively, use the makefile - this is done by typing make compile.
+Then just execute the simulator file by typing ./simulator </p>
