@@ -11,7 +11,7 @@ int evaluationEXP(string qualification, int taskDuration, double score, int numb
     return evaluation;
 }
 
-void simulationTest(int numberOfNurse,string nurseEXP[], double nurse[numberOfNurses][4], int nurseExp[], int averagePatient, int peakPatient, int simScore){
+void simulationTest(int numberOfNurse,string nurseEXP[], double nurse[][4], int nurseExp[], int averagePatient, int peakPatient, int simScore){
     int lowExp=0;
     int mediumExp=0;
     int highExp=0;
@@ -66,27 +66,27 @@ void simulationTest(int numberOfNurse,string nurseEXP[], double nurse[numberOfNu
             if(count2+count1>=(numberOfNurse-count2)*0.8){
                 if (patientNumber>peakPatient) {
                     if ((simScore-mediumScore-lowScore)/8<0) {
-                        cout<<"we need "<<lowExp<<" of lower experienced nurses, "<<mediumExp<<" of medium experienced nurses. There will be "<<numberOfNurse-lowExp-mediumExp<<" extra highly experienced nurses to handle any emergency."<<endl;
+                        cout<<"You will need "<<lowExp<<" less experienced nurses, "<<mediumExp<<" more experienced nurses. There will be "<<numberOfNurse-lowExp-mediumExp<<" extra highly experienced nurses to handle any emergency."<<endl;
                     }
                     else{
-                        cout<<"we need "<<lowExp<<" of lower experienced nurses, "<<mediumExp<<" of medium experienced nurses"<<" and "<<(simScore-mediumScore-lowScore)/8<<" of highly experienced nurses. There will be "<<numberOfNurse-lowExp-mediumExp-(simScore-mediumScore-lowScore)/8<<" extra highly experienced nurses to handle any emergency."<<endl;
+                        cout<<"You will need "<<lowExp<<" less experienced nurses, "<<mediumExp<<" more experienced nurses and "<<(simScore-mediumScore-lowScore)/8<<" of highly experienced nurses. There will be "<<numberOfNurse-lowExp-mediumExp-(simScore-mediumScore-lowScore)/8<<" extra highly experienced nurses to handle any emergency."<<endl;
                     }
                 }
                 else{
-                    cout<<"we need nurses to take care of extra "<<(peakPatient-patientNumber)<<" per day to handle the peak stress. Normal situation will be fine."<<endl;
+                    cout<<"You will need additional staff to take care of "<<(peakPatient-patientNumber)<<" per day to handle the peak patient intake. Off-peak situations do not require extra staff."<<endl;
                 }
             }
             else{
-                cout<<"we need "<<lowExp<<" of lower experienced nurses, "<<mediumExp<<" of medium experienced nurses There will be "<<numberOfNurse-lowExp-mediumExp<<" extra highly experienced nurses to handle any emergency."<<endl;
+                cout<<"You will need "<<lowExp<<" less experienced nurses, "<<mediumExp<<" more experienced nurses. There will be "<<numberOfNurse-lowExp-mediumExp<<" extra highly experienced nurses to handle any emergency."<<endl;
             }
                 
         }
         else{
-            cout<<"number of patient that's taken care of by each of the nurse per day is not enough to handle the stress. we need to take care of extra "<<averagePatient*numberOfNurse-patientNumber<<" patients to handle the stress."<<endl;
+            cout<<"Daily patient intake is too large. You need to take care of an extra "<<averagePatient*numberOfNurse-patientNumber<<" patients to handle this scenario."<<endl;
         }
     }
     else{
-        cout<<"we have just enough nurse to handle the stress but no extra to handle emergency."<<endl;
+        cout<<"There are just enough nurses to handle the day-to-day running but not enough if there are an extraordinary amount of emergencies."<<endl;
     }
 }
 
@@ -110,7 +110,7 @@ int main(){
     //double nurse[20][5]={{1,20,1,20,20},{2,40,0.6,10,10},{1,70,1.5,12,15},{0,90,1.8,17,24},{2,100,2,2,22},{1,45,2.75,4,12},{0,49,3,10,12},{1,78,2.4,9,21},{2,282,0.6,11,25},{1,297,1.7,13,6},{1,29,2.9,16,9},{1,60,1.4,12,22},{0,23,1.5,1,6},{1,22,1.9,1,7},{1,28,1.4,3,28},{1,60,2.5,5,18},{1,80,0.7,8,17},{2,10,0.8,2,29},{1,40,1.8,10,22},{1,90,1.98,9,21}};
     int nurseExp[numberOfNurses];
     ofstream test;
-    test.open("/Users/jingrenli/Library/Mobile Documents/com~apple~CloudDocs/nurse_allocation/test.txt");
+    test.open("test.txt");
     for(int i=0;i<numberOfNurses;i++){//creat text file for graph.
         test<<nurses[i][1]<<" "<<nurses[i][2]<<" "<<nurses[i][3]<<"\n";
     }
@@ -139,11 +139,11 @@ int main(){
             results[i]=rank[0];
     }
     int simScore,averagePatient,peakPatient;
-    cout<<"Please enter the similuation score for the scenario: ";
+    cout<<"Please enter the similuation score(severity) for the scenario: ";
     cin>>simScore;
-    cout<<"Please enter the averagePatient per day in this scenario: ";
+    cout<<"Please enter the average daily patient intake in this scenario: ";
     cin>>averagePatient;
-    cout<<"Please enter the peak of number of patient during the scenario: ";
+    cout<<"Please enter the projected peak number of patients in this secnario: ";
     cin>>peakPatient;
     simulationTest(numberOfNurses,results,nurses,nurseExp,averagePatient,peakPatient,simScore);
     return 0;

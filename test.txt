@@ -1,20 +1,20 @@
-username cq53 task duration 2081 pscore 1.4 averagePatient 1
-username ja92 task duration 1086 pscore 1.09195 averagePatient 1.14286
-username br84 task duration 1236 pscore 1.14394 averagePatient 1
-username gi64 task duration 1491 pscore 1.25 averagePatient 1
-username ab62 task duration 994 pscore 1.26437 averagePatient 1.25
-username ka44 task duration 1289 pscore 1.3375 averagePatient 1.16667
-username dx15 task duration 1067 pscore 1.16981 averagePatient 1
-username fh91 task duration 841 pscore 1.23881 averagePatient 1
-username fx52 task duration 1446 pscore 1.2549 averagePatient 1
-username br28 task duration 1071 pscore 1.18974 averagePatient 1.1
-username gv95 task duration 1219 pscore 0.800866 averagePatient 1.09091
-username aw83 task duration 1567 pscore 1.33688 averagePatient 1.14286
-username ga49 task duration 1335 pscore 1.22414 averagePatient 1
-username ke70 task duration 1671 pscore 1.125 averagePatient 1
-username be27 task duration 1329 pscore 1.175 averagePatient 1.16667
-username ey25 task duration 1086 pscore 0.988439 averagePatient 1.2
-username eu22 task duration 1119 pscore 1.1748 averagePatient 1.17647
-username iv41 task duration 1224 pscore 1.01493 averagePatient 1.07692
-username iu60 task duration 2003 pscore 1.256 averagePatient 1.33333
-username fq26 task duration 1439 pscore 1.12571 averagePatient 1.14286
+2081 1.4 2.33333
+1086 1.09195 1
+1236 1.14394 1.625
+1491 1.25 3
+994 1.26437 2
+1289 1.3375 2
+1067 1.16981 1.25
+841 1.23881 1.16667
+1446 1.2549 1
+1071 1.18974 2
+1219 0.800866 1.9
+1567 1.33688 2.33333
+1335 1.22414 1.72727
+1671 1.125 0
+1329 1.175 1
+1086 0.988439 1.13333
+1119 1.1748 1.5
+1224 1.01493 1.08333
+2003 1.256 1
+1439 1.12571 1.28571
