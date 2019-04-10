@@ -1,0 +1,21 @@
+username: cq53 baseline percentage: 84.8286
+username: ja92 baseline percentage: 84.1377
+username: br84 baseline percentage: 69.795
+username: gi64 baseline percentage: 51.8327
+username: ab62 baseline percentage: 67.2024
+username: ka44 baseline percentage: 71.0212
+username: dx15 baseline percentage: 80.4242
+username: fh91 baseline percentage: 72.0826
+username: fx52 baseline percentage: 60.916
+username: br28 baseline percentage: 63.8964
+username: gv95 baseline percentage: 63.5145
+username: aw83 baseline percentage: 86.5001
+username: ga49 baseline percentage: 81.4341
+username: ke70 baseline percentage: 70.5338
+username: be27 baseline percentage: 77.6748
+username: ey25 baseline percentage: 76.7207
+username: eu22 baseline percentage: 65.2289
+username: iv41 baseline percentage: 87.9535
+username: iu60 baseline percentage: 92.7294
+username: fq26 baseline percentage: 84.9329
+

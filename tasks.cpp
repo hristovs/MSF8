@@ -1,20 +1,19 @@
 #include <iostream>
 #include "queries.h"
 #include <fstream>
+
 using namespace pqxx;
 using namespace std;
 
 
 void dumpUniqueTasks(){
+	fstream uTasks;
+	uTasks.open("uniqueTasks.txt");
 	auto tple = Query::uniqueEvents();
 	int sz = std::get<0>(tple);
 	string *results = std::get<1>(tple);
-	fstream uTasks;
-	uTasks.open("/home/sam/Desktop/Group8/MSF8/uniqueTasks.txt");
-
 	for(int i = 0; i < sz; ++i){
 		uTasks << results[i] << endl;
-		cout<< "testing" << endl;
 	}
 
 	uTasks.close();
@@ -24,11 +23,10 @@ void dumpUniqueTasks(){
 void breaksFile(){
 	fstream breaksFile;
 	breaksFile.open("breaksForEachNurse.txt");
-	string breakString = "break";
-	string *nurses = Query::nurseList();
-	int numberOfNurses = Query::numberOfNurse();
-	//int breakArray = new int[numberOfNurses];
-	for(int i = 0; i < numberOfNurses; ++i){
+	auto tple = Query::nurseList();
+	int sz = std::get<0>(tple);
+	string *nurses = std::get<1>(tple);
+	for(int i = 0; i < sz; ++i){
 		breaksFile << "username: " << nurses[i] << " breaks: " << Query::amountOfBreaks(nurses[i]) << " percentage: " << Query::breaksAsTimePercentage(nurses[i])<< endl;
 	}
 	breaksFile.close();
@@ -36,23 +34,22 @@ void breaksFile(){
 
 
 
+void baselineCare(){
+	fstream baselinePercentFile;
+	baselinePercentFile.open("baselinePercentageForEachNurse.txt");
+	auto tple = Query::nurseList();
+	int numberOfNurses = std::get<0>(tple);
+	string *nurses = std::get<1>(tple);
+	for(int i = 0; i < numberOfNurses; ++i){
+		baselinePercentFile << "username: " << nurses[i] << " baseline percentage: " << Query::baselinePercentage(nurses[i]) << endl;
+	}
+	baselinePercentFile.close();
+}
+
 
 int main(){
 	//breaksFile();
-	dumpUniqueTasks();
+	//dumpUniqueTasks();
+	baselineCare();
 }
 
-
-/*
-
-void indirectCare(){
-
-}
-
-
-void directCare(){
-
-
-
-}
-*/

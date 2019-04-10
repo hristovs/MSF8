@@ -1,8 +1,8 @@
 #include <iostream>
 #include "queries.h"
 #include "Select.h"
-
-/* @function:averageDuration
+/* 
+ *@function:averageDuration
  * @author: Samuil Hristov
  * @edited: Jingren Li, Samuil Hristov
  * Returns double of averageDuration for all tasks
@@ -41,7 +41,8 @@ double Query::averageDuration(string username){
 
 
 
-/* @function:averagePatients
+/* 
+ *@function:averagePatients
  * @author: Jingren Li
  * @edited: Samuil Hristov
  * Returns float of average patients being admitted
@@ -101,7 +102,8 @@ float Query::averagePatients(string username){
 }
 
 
-/* @function:pscore
+/* 
+ *@function:pscore
  * @author: Jingren Li
  * @edited: Samuil Hristov
  * Returns float of average patient severity
@@ -171,7 +173,8 @@ float Query::pscore(string username){
 }
 
 
-/* @function:numberOfShift
+/*
+ * @function:numberOfShift
  * @author: Jingren Li
  * @edited: Samuil Hristov
  * Returns array of size 2 - gives day and night shift amounts
@@ -249,6 +252,12 @@ int Query::qualification(string username){
     return result;
 }
 
+/*
+ *@function:nurseList()
+ *@author:Jingren Li
+ *@edited:Samuil Hristov
+ *returns a tuple of array size and string array of nurse IDs 
+ */
 std::tuple<int, string *> Query::nurseList(){
     string delimiter = ":";
     string columnName = "username";
@@ -267,6 +276,13 @@ std::tuple<int, string *> Query::nurseList(){
 }
 
 
+/*
+ *@function:amountOfBreaks(username) 
+ *@author:Samuil Hristov
+ *returns integer - amount of breaks for a given username
+ */
+
+
 int Query::amountOfBreaks(string username){
     string sql = "select event_id from tevent where username='" + username + "' and event_type='taking_a_break'";
     Select *breaks = new Select(sql);
@@ -274,6 +290,13 @@ int Query::amountOfBreaks(string username){
     breaks->queryDatabase();
     return breaks->dataSize();
 }
+
+
+/*
+ *@function:breaksAsTimePercentage(username)
+ *@author:Samuil Hristov
+ *returns breaks of a user as a percentage of their total time spent doing actions in a month
+ */
 
 
 double Query::breaksAsTimePercentage(string username){
@@ -312,7 +335,11 @@ double Query::breaksAsTimePercentage(string username){
 
 }
 
-
+/*
+ *@function:uniqueEvents
+ *@author:Samuil Hristov
+ *returns a tuple of array size and string array of unique events in tevent
+ */
 
 std::tuple<int, string*>  Query::uniqueEvents(){
     string sql = "select event_type from tevent";
@@ -337,7 +364,11 @@ std::tuple<int, string*>  Query::uniqueEvents(){
     return {j, uniqueResults};
 }
 
-
+/*
+ *@function:isPresent(array,size,token)
+ *@author:Samuil Hristov
+ *check if token is present in an array of a given size
+ */
 
  bool Query::isPresent(string *array, int size, string checkPresent){
     if(size == 0) return false;
@@ -346,3 +377,64 @@ std::tuple<int, string*>  Query::uniqueEvents(){
     }
     return false;
  }
+
+
+
+
+
+/*
+ *@function:baselinePercentage()
+ *@author:Samuil Hristov
+ *returns tuple of array size and string array
+ */
+
+
+ double Query::baselinePercentage(string username){
+string arrayOfBaselineTasks[]={"admission","discharge","drug_round","vital_sign_round","patient_documentation","meeting_patients_basic_needs",\
+"handover","surveillance","taking_a_break","indirect_patient_care","pharmacy_tasks"};
+    int baselineTaskAmount = 11;
+    string sql = "select duration from tevent where (username='" + username + "')";
+
+    for(int i = 0; i < baselineTaskAmount; ++i){
+        if(i == 0){
+            sql+=" AND (event_type='" + arrayOfBaselineTasks[i] + "'";
+        } 
+        else{
+            sql+=" OR event_type='" + arrayOfBaselineTasks[i] + "'";
+        }
+    }
+    sql+=")";
+    cout << sql << endl;
+    Select *baseline = new Select(sql);
+    baseline->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    baseline->queryDatabase();
+    string *resultString = baseline->resultString();
+    int size = baseline->dataSize();
+    double baselineDuration = 0.0;
+    double wholeDuration = durationOfAllTasks(username);
+
+      for(int i = 0; i < size; ++i){
+      if(resultString[i].substr(0,resultString[i].find(":"))=="duration" && !(resultString[i].substr(resultString[i].find(":")+1).empty())){
+            baselineDuration += stod(resultString[i].substr(resultString[i].find(":")+1));
+
+        }
+    }
+
+    return (baselineDuration/wholeDuration) * 100;
+ }
+
+double Query::durationOfAllTasks(string username){
+    string sql = "select duration from tevent where username='" + username + "'";
+    Select *duration = new Select(sql);
+    duration->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    duration->queryDatabase();
+    string *resultString = duration->resultString();
+    int size = duration->dataSize();
+    double allTasks = 0.0;
+    for(int i = 0; i < size; ++i){
+      if(resultString[i].substr(0,resultString[i].find(":"))=="duration" && !(resultString[i].substr(resultString[i].find(":")+1).empty())){
+            allTasks += stod(resultString[i].substr(resultString[i].find(":")+1));
+        }
+    }
+    return allTasks;
+}

@@ -10,11 +10,12 @@ public:
 	static int *numberOfShift();
    // static int numberOfNurse();
     static int qualification(string username);
-    static std::tuple<int, string *> nurseList();
+    static std::tuple<int, string*> nurseList();
     static int amountOfBreaks(string username);
     static double breaksAsTimePercentage(string username);
     static std::tuple<int, string*> uniqueEvents();
-
+    static double baselinePercentage(string username);
+    static double durationOfAllTasks(string username);
 private:
 	static bool isPresent(string *array, int size, string checkPresent);
 
