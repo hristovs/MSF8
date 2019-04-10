@@ -212,14 +212,14 @@ int *Query::numberOfShift(){
     return result;
 }
 
-int Query::numberOfNurse(){
+/*int Query::numberOfNurse(){
     string sqlQuery = "select username from texp";
     Select *numberOfNurse = new Select(sqlQuery);
     numberOfNurse->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     numberOfNurse->queryDatabase();
     int arraySize = numberOfNurse->dataSize();
     return arraySize;
-}
+}*/
 
 int Query::qualification(string username){
     string sqlQuery = "select qualification from texp where username='"+username+"'";
@@ -249,7 +249,7 @@ int Query::qualification(string username){
     return result;
 }
 
-string *Query::nurseList(){
+std::tuple<int, string *> Query::nurseList(){
     string delimiter = ":";
     string columnName = "username";
     string sqlQuery = "select username from texp";
@@ -263,7 +263,7 @@ string *Query::nurseList(){
             resultStrings[i]=resultStrings[i].substr(resultStrings[i].find(delimiter) + 1);
         }
     }
-    return resultStrings;
+    return {username->dataSize(), resultStrings};
 }
 
 
@@ -311,3 +311,38 @@ double Query::breaksAsTimePercentage(string username){
     return (totalBreakDuration/totalDuration)*100;
 
 }
+
+
+
+std::tuple<int, string*>  Query::uniqueEvents(){
+    string sql = "select event_type from tevent";
+    Select *events = new Select(sql);
+    events->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    events->queryDatabase();
+    int size = events->dataSize();
+    string *results = events->resultString();
+    string *uniqueResults;
+    int j = 0;
+    uniqueResults = new string[events->dataSize()];
+    for(int i = 0; i < size; ++i){
+        if(results[i].substr(0,results[i].find(":"))=="event_type" && !(results[i].substr(results[i].find(":")+1).empty())){
+        if(!isPresent(uniqueResults,j,results[i].substr(results[i].find(":")+1))){
+           
+            uniqueResults[j] = results[i].substr(results[i].find(":")+1);
+            ++j;
+        }
+    }
+    }
+
+    return {j, uniqueResults};
+}
+
+
+
+ bool Query::isPresent(string *array, int size, string checkPresent){
+    if(size == 0) return false;
+    for(int i = 0; i < size; ++i){
+        if(array[i].substr(array[i].find(":")+1) == checkPresent) return true;
+    }
+    return false;
+ }

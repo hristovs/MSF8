@@ -1,0 +1,11 @@
+admission
+discharge
+drug_round
+vital_sign_round
+patient_documentation
+meeting_patients_basic_needs
+handover
+surveillance
+taking_a_break
+indirect_patient_care
+pharmacy_tasks

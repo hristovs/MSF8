@@ -92,8 +92,9 @@ void simulationTest(int numberOfNurse,string nurseEXP[], double nurse[][4], int 
 
 
 int main(){
-    numberOfNurses=Query::numberOfNurse();
-    string *nurseList = Query::nurseList();
+    auto tpl = Query::nurseList();
+    numberOfNurses=std::get<0>(tpl);
+    string *nurseList =std::get<1>(tpl);
     double nurses[numberOfNurses][4];
     for(int i=0;i<numberOfNurses;i++){
         nurses[i][0]=Query::qualification(nurseList[i]);

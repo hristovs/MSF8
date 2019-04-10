@@ -4,8 +4,25 @@
 using namespace pqxx;
 using namespace std;
 
-int main(){
-	ofstream breaksFile;
+
+void dumpUniqueTasks(){
+	auto tple = Query::uniqueEvents();
+	int sz = std::get<0>(tple);
+	string *results = std::get<1>(tple);
+	fstream uTasks;
+	uTasks.open("/home/sam/Desktop/Group8/MSF8/uniqueTasks.txt");
+
+	for(int i = 0; i < sz; ++i){
+		uTasks << results[i] << endl;
+		cout<< "testing" << endl;
+	}
+
+	uTasks.close();
+}
+
+
+void breaksFile(){
+	fstream breaksFile;
 	breaksFile.open("breaksForEachNurse.txt");
 	string breakString = "break";
 	string *nurses = Query::nurseList();
@@ -16,3 +33,26 @@ int main(){
 	}
 	breaksFile.close();
 }
+
+
+
+
+int main(){
+	//breaksFile();
+	dumpUniqueTasks();
+}
+
+
+/*
+
+void indirectCare(){
+
+}
+
+
+void directCare(){
+
+
+
+}
+*/

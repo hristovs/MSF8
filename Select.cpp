@@ -108,4 +108,3 @@ void Select::setConnectionParameters(string dbname,string account, string passwo
 result Select::returnResult(){
     return R;
 }
-
