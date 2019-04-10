@@ -217,8 +217,6 @@ int Query::numberOfNurse(){
     Select *numberOfNurse = new Select(sqlQuery);
     numberOfNurse->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
     numberOfNurse->queryDatabase();
-    string delimiter = ":";
-    string columnName = "username";
     int arraySize = numberOfNurse->dataSize();
     return arraySize;
 }
@@ -266,4 +264,50 @@ string *Query::nurseList(){
         }
     }
     return resultStrings;
+}
+
+
+int Query::amountOfBreaks(string username){
+    string sql = "select event_id from tevent where username='" + username + "' and event_type='taking_a_break'";
+    Select *breaks = new Select(sql);
+    breaks->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    breaks->queryDatabase();
+    return breaks->dataSize();
+}
+
+
+double Query::breaksAsTimePercentage(string username){
+    string allDurationSQL = "select duration from tevent where username='" + username + "'";
+    Select *allDuration = new Select(allDurationSQL);
+    allDuration->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    allDuration->queryDatabase();
+    string *resultString = allDuration->resultString();
+    int size = allDuration->dataSize();
+    double totalDuration = 0.0;
+    for(int i = 0; i < size; ++i){
+        if(resultString[i].substr(0,resultString[i].find(":"))=="duration"){
+        if(!resultString[i].substr(resultString[i].find(":") + 1).empty()){
+        totalDuration+= stod(resultString[i].substr(resultString[i].find(":") + 1));
+    }
+    }
+    }
+  
+
+    string breakDurationSQL = "select duration from tevent where username='" + username + "' and event_type='taking_a_break'";
+    Select *breakDuration = new Select(breakDurationSQL);
+    breakDuration->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    breakDuration->queryDatabase();
+    string *breakString = breakDuration->resultString();
+    int breaks = breakDuration->dataSize();
+    double totalBreakDuration = 0.0;
+    for(int i = 0; i < breaks; ++i){
+        if(breakString[i].substr(0,breakString[i].find(":"))=="duration"){
+        if(!breakString[i].substr(breakString[i].find(":") + 1).empty()){
+        totalBreakDuration+=stod(breakString[i].substr(breakString[i].find(":") + 1));
+    }
+
+    }
+    }
+    return (totalBreakDuration/totalDuration)*100;
+
 }

@@ -11,6 +11,8 @@ public:
     static int numberOfNurse();
     static int qualification(string username);
     static string *nurseList();
+    static int amountOfBreaks(string username);
+    static double breaksAsTimePercentage(string username);
 private:
 
 
