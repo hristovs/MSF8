@@ -23,7 +23,7 @@ cur.execute("select distinct(duration_of_qualification) FROM texp;")
 list1 = cur.fetchall()
 exp = ["" for x in range(len(list1))]
 for i in range(0,len(list1)):
-    experience = list1[i]
+    experience = list1[i] 
     experience = experience[0]
     exp[i] = experience
 
