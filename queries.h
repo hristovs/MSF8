@@ -11,6 +11,7 @@ public:
    // static int numberOfNurse();
     static int qualification(string username);
     static std::tuple<int, string*> nurseList();
+    static std::tuple<int, string*> nurseList(string* nursesToExclude, int amountOfNursesToExclude);
     static int amountOfBreaks(string username);
     static double breaksAsTimePercentage(string username);
     static std::tuple<int, string*> uniqueEvents();

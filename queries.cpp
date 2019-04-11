@@ -260,6 +260,8 @@ int Query::qualification(string username){
  */
 std::tuple<int, string *> Query::nurseList(){
     string delimiter = ":";
+    int nursesToExclude = 1;
+
     string columnName = "username";
     string sqlQuery = "select username from texp";
     Select *username = new Select(sqlQuery);
@@ -267,13 +269,57 @@ std::tuple<int, string *> Query::nurseList(){
     username->queryDatabase();
     int arraySize = username->dataSize();
     string *resultStrings=username->resultString();
+    int sizeOfFilteredArray = arraySize - nursesToExclude;
+    string *filteredResults = new string[sizeOfFilteredArray];
+    int j = 0;
     for (int i=0; i<arraySize;i++) {
         if(resultStrings[i].substr(0,resultStrings[i].find(delimiter))==columnName){
-            resultStrings[i]=resultStrings[i].substr(resultStrings[i].find(delimiter) + 1);
+            if( !(resultStrings[i].substr(resultStrings[i].find(delimiter) + 1)=="gi64")){
+                filteredResults[j]=resultStrings[i].substr(resultStrings[i].find(delimiter) + 1);
+                ++j;
+        }
         }
     }
-    return {username->dataSize(), resultStrings};
+    return {sizeOfFilteredArray, filteredResults};
 }
+
+
+
+
+
+
+std::tuple<int, string *> Query::nurseList(string* nursesToExclude, int amountOfNursesToExclude){
+    string delimiter = ":";
+    int szExclude = amountOfNursesToExclude;
+
+    string columnName = "username";
+    string sqlQuery = "select username from texp";
+    Select *username = new Select(sqlQuery);
+    username->setConnectionParameters("nurses", "nursesadmin", "password","63.32.216.167", 5432);
+    username->queryDatabase();
+    int arraySize = username->dataSize();
+    string *resultStrings=username->resultString();
+    int sizeOfFilteredArray = arraySize - szExclude;
+    string *filteredResults = new string[sizeOfFilteredArray];
+    int j = 0;
+    for (int i=0; i<arraySize;i++) {
+        if(resultStrings[i].substr(0,resultStrings[i].find(delimiter))==columnName){
+            if(!(isPresent(nursesToExclude,szExclude,resultStrings[i].substr(resultStrings[i].find(delimiter) + 1)))){
+                filteredResults[j]=resultStrings[i].substr(resultStrings[i].find(delimiter) + 1);
+                ++j;
+        }
+    }
+    }
+    return {sizeOfFilteredArray, filteredResults};
+}
+
+
+
+
+
+
+
+
 
 
 /*

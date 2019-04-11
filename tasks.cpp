@@ -23,7 +23,10 @@ void dumpUniqueTasks(){
 void breaksFile(){
 	fstream breaksFile;
 	breaksFile.open("breaksForEachNurse.txt");
-	auto tple = Query::nurseList();
+	int amountOfNursesToExclude = 1;
+	string* nursesToExclude = new string[amountOfNursesToExclude];
+	nursesToExclude[0] = "gi64";
+	auto tple = Query::nurseList(nursesToExclude, amountOfNursesToExclude);
 	int sz = std::get<0>(tple);
 	string *nurses = std::get<1>(tple);
 	for(int i = 0; i < sz; ++i){
@@ -37,7 +40,10 @@ void breaksFile(){
 void baselineCare(){
 	fstream baselinePercentFile;
 	baselinePercentFile.open("baselinePercentageForEachNurse.txt");
-	auto tple = Query::nurseList();
+	int amountOfNursesToExclude = 1;
+	string* nursesToExclude = new string[amountOfNursesToExclude];
+	nursesToExclude[0] = "gi64";
+	auto tple = Query::nurseList(nursesToExclude, amountOfNursesToExclude);
 	int numberOfNurses = std::get<0>(tple);
 	string *nurses = std::get<1>(tple);
 	for(int i = 0; i < numberOfNurses; ++i){
